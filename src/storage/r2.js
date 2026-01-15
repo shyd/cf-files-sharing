@@ -1,4 +1,8 @@
 // src/storage/r2.js
+const options = {
+  limit: 500,
+  include: ["customMetadata"],
+};
 
 class R2Storage {
   constructor(bucket) {
@@ -43,7 +47,7 @@ class R2Storage {
 
   async list() {
     try {
-      const objects = await this.bucket.list();
+      const objects = await this.bucket.list(options);
       const files = objects.objects.map(obj => {
         return {
           id: obj.key,
