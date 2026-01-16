@@ -2,7 +2,7 @@
 
 class Auth {
   static cookieName = 'auth_token';
-  static cookieExpiry = 30 * 24 * 60 * 60; // 30 天，单位为秒
+  static cookieExpiry = 30 * 24 * 60 * 60; // 30 days expressed in seconds
 
   static async validatePassword(password, env) {
     if (!env.AUTH_PASSWORD) {

@@ -274,7 +274,7 @@ export const mainTemplate = (lang = 'zh', files = []) => {
     .logout-btn:hover {
       color: red;
     }
-    /* 通知栏样式 */
+    /* Notification bar styles */
     #notificationBar {
       position: fixed;
       bottom: -100px;
@@ -306,7 +306,7 @@ export const mainTemplate = (lang = 'zh', files = []) => {
       font-size: 1.5rem;
       cursor: pointer;
     }
-    /* 响应式设计 */
+    /* Responsive design */
     @media (max-width: 600px) {
       .upload-form {
         padding: 1rem;

@@ -10,11 +10,11 @@ export default {
     const url = new URL(request.url);
     const storageManager = new StorageManager(env);
 
-    // 获取用户的语言偏好
+    // Determine the user's language preference
     const acceptLanguage = request.headers.get('Accept-Language') || 'en';
     const lang = acceptLanguage.includes('zh') ? 'zh' : 'en';
 
-    // 文件下载处理
+    // Handle file downloads
     if (url.pathname.startsWith('/file/')) {
       const id = url.pathname.split('/')[2];
       const file = await storageManager.retrieve(id);
@@ -23,7 +23,7 @@ export default {
         return errorResponse(lang === 'zh' ? '文件未找到' : 'File not found', 404);
       }
 
-      // 解决中文文件名下载问题
+      // Ensure Chinese filenames download correctly
       const filename = file.filename;
       const encodedFilename = encodeURIComponent(filename);
       const contentDisposition = `attachment; filename="${encodedFilename}"; filename*=UTF-8''${encodedFilename}`;
@@ -36,7 +36,7 @@ export default {
       });
     }
 
-    // 认证检查
+    // Authentication check
     if (!(await Auth.verifyAuth(request, env))) {
       if (url.pathname === '/auth' && request.method === 'POST') {
         const formData = await request.formData();
@@ -60,7 +60,7 @@ export default {
       return htmlResponse(loginTemplate(lang));
     }
 
-    // 退出登录
+    // Handle logout
     if (url.pathname === '/logout') {
       if (request.method === 'POST') {
         const expiredCookie = Auth.createExpiredCookie();
@@ -81,7 +81,7 @@ export default {
       }
     }
 
-    // 文件删除处理
+    // Handle file deletions
     if (url.pathname === '/delete' && request.method === 'POST') {
       const formData = await request.formData();
       const id = formData.get('id');
@@ -95,15 +95,15 @@ export default {
       }
     }
 
-    // 文件上传处理
+    // Handle file uploads
     if (url.pathname === '/upload' && request.method === 'POST') {
       const formData = await request.formData();
       const file = formData.get('file');
       let storageType = formData.get('storage');
 
-      // 保留对存储介质的选择
+      // Preserve the caller's storage medium selection
       if (file.size > 25 * 1024 * 1024 && storageType !== 'r2') {
-        storageType = 'r2'; // 大于25MB的文件强制使用R2
+        storageType = 'r2'; // Force files larger than 25MB to use R2
       }
 
       try {
@@ -121,7 +121,7 @@ export default {
       }
     }
 
-    // 主页面
+    // Main page
     if (url.pathname === '/') {
       const files = await storageManager.list();
 

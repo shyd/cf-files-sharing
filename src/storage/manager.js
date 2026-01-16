@@ -31,11 +31,11 @@ class StorageManager {
   }
 
   async retrieve(id) {
-    // 尝试从 D1 存储中获取
+    // Attempt to retrieve from D1 storage
     let file = await this.d1Storage.retrieve(id);
     if (file) return file;
 
-    // 尝试从 R2 存储中获取
+    // Attempt to retrieve from R2 storage
     file = await this.r2Storage.retrieve(id);
     if (file) return file;
 
@@ -43,11 +43,11 @@ class StorageManager {
   }
 
   async delete(id) {
-    // 尝试从 D1 存储中删除
+    // Attempt to delete from D1 storage
     let success = await this.d1Storage.delete(id);
     if (success) return true;
 
-    // 尝试从 R2 存储中删除
+    // Attempt to delete from R2 storage
     success = await this.r2Storage.delete(id);
     if (success) return true;
 
