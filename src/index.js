@@ -99,15 +99,9 @@ export default {
     if (url.pathname === '/upload' && request.method === 'POST') {
       const formData = await request.formData();
       const file = formData.get('file');
-      let storageType = formData.get('storage');
-
-      // Preserve the caller's storage medium selection
-      if (file.size > 25 * 1024 * 1024 && storageType !== 'r2') {
-        storageType = 'r2'; // Force files larger than 25MB to use R2
-      }
 
       try {
-        const metadata = await storageManager.store(file, storageType);
+        const metadata = await storageManager.store(file);
 
         return jsonResponse({
           id: metadata.id,

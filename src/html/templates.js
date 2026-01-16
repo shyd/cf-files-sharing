@@ -165,10 +165,6 @@ export const mainTemplate = (lang = 'zh', files = []) => {
     .drag-drop .open-btn:hover {
       background: #333;
     }
-    .storage-options {
-      margin: 1rem 0;
-      text-align: center;
-    }
     .progress {
       width: 100%;
       height: 6px;
@@ -335,13 +331,6 @@ export const mainTemplate = (lang = 'zh', files = []) => {
         <button class="open-btn" onclick="document.getElementById('fileInput').click()">${isZh ? '选择文件' : 'Choose Files'}</button>
         <button class="upload-btn" onclick="uploadFiles()">${isZh ? '上传' : 'Upload'}</button>
       </div>
-      <div class="storage-options">
-        <label>${isZh ? '存储方式' : 'Storage'}:</label>
-        <select id="storageType">
-          <option value="r2">R2 ${isZh ? '存储' : 'Storage'}</option>
-          <option value="d1">D1 ${isZh ? '数据库' : 'Database'}</option>
-        </select>
-      </div>
       <div class="fee-warning" id="feeWarning"></div>
       <div class="progress">
         <div class="progress-bar" id="progressBar"></div>
@@ -412,7 +401,6 @@ export const mainTemplate = (lang = 'zh', files = []) => {
     const progress = document.querySelector('.progress');
     const uploadResult = document.getElementById('uploadResult');
     const uploadingIndicator = document.getElementById('uploadingIndicator');
-    const storageTypeSelect = document.getElementById('storageType');
     const notificationBar = document.getElementById('notificationBar');
     const notificationMessage = notificationBar.querySelector('.message');
     const lang = navigator.language.includes('zh') ? 'zh' : 'en';
@@ -449,7 +437,7 @@ export const mainTemplate = (lang = 'zh', files = []) => {
       const estimatedCost = (
         (totalSize / (1024 * 1024 * 1024)) *
         0.02
-      ).toFixed(2); // 假设每GB 0.02美元
+      ).toFixed(2); // Assume $0.02 per GB
       feeWarning.textContent =
         lang === 'zh'
           ? \`预计费用：\$\${estimatedCost}\`
@@ -465,23 +453,11 @@ export const mainTemplate = (lang = 'zh', files = []) => {
       uploadResult.style.display = 'none';
       uploadingIndicator.style.display = 'block';
 
-      const storageType = storageTypeSelect.value;
-
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
 
-        // 保留对存储介质的选择
-        let currentStorageType = storageType;
-        if (
-          file.size > 25 * 1024 * 1024 &&
-          currentStorageType !== 'r2'
-        ) {
-          currentStorageType = 'r2';
-        }
-
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('storage', currentStorageType);
 
         try {
           const response = await fetch('/upload', {
