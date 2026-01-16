@@ -347,7 +347,6 @@ export const mainTemplate = (lang = 'zh', files = []) => {
         <tr>
           <th>${isZh ? '文件名' : 'Filename'}</th>
           <th>${isZh ? '大小' : 'Size'}</th>
-          <th>${isZh ? '存储类型' : 'Storage Type'}</th>
           <th>${isZh ? '创建时间' : 'Created At'}</th>
           <th>${isZh ? '分享链接' : 'Share Link'}</th>
           <th>${isZh ? '操作' : 'Actions'}</th>
@@ -360,7 +359,6 @@ export const mainTemplate = (lang = 'zh', files = []) => {
           <tr>
             <td>${file.filename}</td>
             <td>${formatSize(file.size)}</td>
-            <td>${file.storage_type.toUpperCase()}</td>
             <td>${new Date(file.created_at).toLocaleString(
               lang === 'zh' ? 'zh-CN' : 'en-US'
             )}</td>
